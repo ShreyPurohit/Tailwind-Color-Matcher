@@ -1,11 +1,11 @@
 # Tailwind Color Matcher
 
-A modern web app built with SvelteKit and TypeScript that helps designers and developers find the closest Tailwind CSS color to any hex color code. 
+A modern web app built with SvelteKit and TypeScript that helps designers and developers find the closest Tailwind CSS color to any hex color code.
 Perfect for ensuring design consistency and exploring Tailwind's color palette.
 
 ## 🚀 Why This Project?
 
-Tailwind CSS provides a comprehensive color palette, but when working with custom colors, it can be challenging to find the closest match. 
+Tailwind CSS provides a comprehensive color palette, but when working with custom colors, it can be challenging to find the closest match.
 This tool simplifies that process by:
 
 - Extracting hex color codes from user input or pasted content.
