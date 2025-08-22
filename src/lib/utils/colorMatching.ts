@@ -137,5 +137,5 @@ export function getColorFamilySuggestions(userColor: string): ColorMatch[] {
 		});
 	});
 
-	return matches.sort((a, b) => a.distance - b.distance).slice(0, 10);
+	return matches.sort((a, b) => a.distance - b.distance).slice(0, 12);
 }

@@ -1,6 +1,7 @@
 <script lang="ts">
-	import type { ColorMatchProps } from '$types/color';
-	import { cn } from '$utils/constants';
+	import type { ColorMatchProps } from '$lib/types/color';
+	import { cn } from '$lib/utils/constants';
+	import { getColorInfo, getContrastingTextColor } from '$lib/utils/colorConversion';
 	import { Check, Copy, ExternalLink, Zap } from 'lucide-svelte';
 
 	let { originalColor, match }: ColorMatchProps = $props();
@@ -33,6 +34,14 @@
 	}
 
 	const isExactMatch = $derived(match.distance === 0);
+
+	// Get detailed color information using the previously unused getColorInfo function
+	const originalColorInfo = $derived(getColorInfo(originalColor));
+	const matchColorInfo = $derived(getColorInfo(match.color.hex));
+
+	// Get contrasting text colors for better readability using previously unused function
+	const originalTextColor = $derived(getContrastingTextColor(originalColor));
+	const matchTextColor = $derived(getContrastingTextColor(match.color.hex));
 </script>
 
 <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -65,9 +74,20 @@
 			<h4 class="font-medium text-gray-700">Your Color</h4>
 			<div class="relative">
 				<div
-					class="h-24 w-full rounded-lg border-2 border-gray-200 shadow-inner"
-					style="background-color: {originalColor}"
-				></div>
+					class="flex h-32 w-full items-center justify-center rounded-lg border-2 border-gray-200 shadow-inner"
+					style="background-color: {originalColor}; color: {originalTextColor};"
+				>
+					<span class="font-mono text-sm font-semibold drop-shadow-sm">
+						{originalColor}
+					</span>
+				</div>
+				{#if originalColorInfo}
+					<div
+						class="bg-opacity-70 absolute bottom-2 left-2 rounded bg-black px-2 py-1 text-xs text-white"
+					>
+						L: {originalColorInfo.luminance.toFixed(2)}
+					</div>
+				{/if}
 				<button
 					onclick={() => copyToClipboard(originalColor, 'original')}
 					class="bg-opacity-90 hover:bg-opacity-100 absolute top-2 right-2 rounded-lg bg-white p-2 shadow-sm transition-all duration-200 hover:scale-105"
@@ -80,9 +100,6 @@
 					{/if}
 				</button>
 			</div>
-			<p class="rounded bg-gray-50 px-2 py-1 font-mono text-sm text-gray-600">
-				{originalColor}
-			</p>
 		</div>
 
 		<!-- Matched Color -->
@@ -90,9 +107,20 @@
 			<h4 class="font-medium text-gray-700">Tailwind Match</h4>
 			<div class="relative">
 				<div
-					class="h-24 w-full rounded-lg border-2 border-gray-200 shadow-inner"
-					style="background-color: {match.color.hex}"
-				></div>
+					class="flex h-32 w-full items-center justify-center rounded-lg border-2 border-gray-200 shadow-inner"
+					style="background-color: {match.color.hex}; color: {matchTextColor};"
+				>
+					<span class="font-mono text-sm font-semibold drop-shadow-sm">
+						{match.color.hex}
+					</span>
+				</div>
+				{#if matchColorInfo}
+					<div
+						class="bg-opacity-70 absolute bottom-2 left-2 rounded bg-black px-2 py-1 text-xs text-white"
+					>
+						L: {matchColorInfo.luminance.toFixed(2)}
+					</div>
+				{/if}
 				<button
 					onclick={() => copyToClipboard(match.color.hex, 'match')}
 					class="bg-opacity-90 hover:bg-opacity-100 absolute top-2 right-2 rounded-lg bg-white p-2 shadow-sm transition-all duration-200 hover:scale-105"
@@ -105,11 +133,69 @@
 					{/if}
 				</button>
 			</div>
-			<p class="rounded bg-gray-50 px-2 py-1 font-mono text-sm text-gray-600">
-				{match.color.hex}
-			</p>
 		</div>
 	</div>
+
+	<!-- Enhanced Color Information with detailed color space data -->
+	{#if originalColorInfo && matchColorInfo}
+		<div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+			<div class="rounded-lg bg-gray-50 p-4">
+				<h5 class="mb-2 text-sm font-medium text-gray-700">Your Color Details</h5>
+				<div class="space-y-1 text-xs text-gray-600">
+					<p>
+						<span class="font-medium">RGB:</span>
+						{originalColorInfo.rgb.map((v) => Math.round(v)).join(', ')}
+					</p>
+					<p>
+						<span class="font-medium">HSL:</span>
+						{originalColorInfo.hsl
+							.map((v, i) => (i === 0 ? Math.round(v || 0) : Math.round((v || 0) * 100) + '%'))
+							.join(', ')}
+					</p>
+					<p>
+						<span class="font-medium">LAB:</span>
+						{originalColorInfo.lab.map((v) => Math.round(v || 0)).join(', ')}
+					</p>
+					<p>
+						<span class="font-medium">Luminance:</span>
+						{originalColorInfo.luminance.toFixed(3)}
+					</p>
+					{#if originalColorInfo.temperature}
+						<p>
+							<span class="font-medium">Temperature:</span>
+							{Math.round(originalColorInfo.temperature)}K
+						</p>
+					{/if}
+				</div>
+			</div>
+			<div class="rounded-lg bg-gray-50 p-4">
+				<h5 class="mb-2 text-sm font-medium text-gray-700">Tailwind Match Details</h5>
+				<div class="space-y-1 text-xs text-gray-600">
+					<p>
+						<span class="font-medium">RGB:</span>
+						{matchColorInfo.rgb.map((v) => Math.round(v)).join(', ')}
+					</p>
+					<p>
+						<span class="font-medium">HSL:</span>
+						{matchColorInfo.hsl
+							.map((v, i) => (i === 0 ? Math.round(v || 0) : Math.round((v || 0) * 100) + '%'))
+							.join(', ')}
+					</p>
+					<p>
+						<span class="font-medium">LAB:</span>
+						{matchColorInfo.lab.map((v) => Math.round(v || 0)).join(', ')}
+					</p>
+					<p><span class="font-medium">Luminance:</span> {matchColorInfo.luminance.toFixed(3)}</p>
+					{#if matchColorInfo.temperature}
+						<p>
+							<span class="font-medium">Temperature:</span>
+							{Math.round(matchColorInfo.temperature)}K
+						</p>
+					{/if}
+				</div>
+			</div>
+		</div>
+	{/if}
 
 	<!-- Color Information -->
 	<div class="mt-6 space-y-4">

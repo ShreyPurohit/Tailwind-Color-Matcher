@@ -3,7 +3,7 @@ import chroma from 'chroma-js';
 /**
  * Gets LCH values from hex color for distance calculations
  */
-export function getLCHFromHex(hex: string): [number, number, number] {
+function getLCHFromHex(hex: string): [number, number, number] {
 	try {
 		const lch = chroma(hex).lch();
 		// Handle NaN values that can occur with some edge case colors
@@ -63,7 +63,7 @@ export function calculateColorDistance(color1: string, color2: string): number {
 }
 
 /**
- * Get color information including various color space values
+ * Get comprehensive color information including various color space values
  */
 export function getColorInfo(hex: string) {
 	try {
@@ -75,7 +75,8 @@ export function getColorInfo(hex: string) {
 			lab: color.lab(),
 			lch: color.lch(),
 			luminance: color.luminance(),
-			name: color.name ? color.name() : undefined
+			name: color.name ? color.name() : undefined,
+			temperature: color.temperature ? color.temperature() : undefined
 		};
 	} catch (error) {
 		console.warn('Failed to get color info:', error);
@@ -86,7 +87,7 @@ export function getColorInfo(hex: string) {
 /**
  * Check if a color is considered light or dark
  */
-export function isLightColor(hex: string): boolean {
+function isLightColor(hex: string): boolean {
 	try {
 		return chroma(hex).luminance() > 0.5;
 	} catch (error) {

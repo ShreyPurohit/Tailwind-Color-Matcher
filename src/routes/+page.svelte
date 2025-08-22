@@ -1,13 +1,14 @@
 <script lang="ts">
-	import ColorInput from '$components/ColorInput.svelte';
-	import ColorMatch from '$components/ColorMatch.svelte';
-	import MultipleMatches from '$components/MultipleMatches.svelte';
+	import ColorInput from '$lib/components/ColorInput.svelte';
+	import ColorMatch from '$lib/components/ColorMatch.svelte';
+	import MultipleMatches from '$lib/components/MultipleMatches.svelte';
+	import ColorSuggestions from '$lib/components/ColorSuggestions.svelte';
 	import { Palette, Sparkles, TriangleAlert } from 'lucide-svelte';
 
-	import type { ColorMatch as ColorMatchType } from '$types/color';
-	import { findMultipleMatches } from '$utils/colorMatching';
-	import { extractHexColor } from '$utils/colorValidation';
-	import { exampleColors } from '$utils/constants';
+	import type { ColorMatch as ColorMatchType } from '$lib/types/color';
+	import { findMultipleMatches } from '$lib/utils/colorMatching';
+	import { extractHexColor } from '$lib/utils/colorValidation';
+	import { exampleColors } from '$lib/utils/constants';
 
 	// Step 1: Declare reactive state variables
 	let inputValue = $state('');
@@ -119,6 +120,10 @@
 						matches={multipleMatches}
 						onSelectMatch={(match) => handleSelectMatch(match)}
 						{selectedMatch}
+					/>
+					<ColorSuggestions
+						userColor={validatedColor}
+						onSelectColor={(color) => handleExampleColor(color)}
 					/>
 				{:else}
 					<!-- No Match Found -->

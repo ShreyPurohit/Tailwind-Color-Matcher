@@ -26,3 +26,8 @@ export interface ColorMatchProps {
 	originalColor: string;
 	match: ColorMatch;
 }
+
+export interface ColorSuggestionsProps {
+	userColor: string;
+	onSelectColor: (color: string) => void;
+}
