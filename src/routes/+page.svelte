@@ -13,6 +13,7 @@
 	let inputValue = $state('');
 	let selectedMatch = $state<ColorMatchType | null>(null);
 	let multipleMatches = $state<ColorMatchType[]>([]);
+	let lastValidatedColor = $state<string | null>(null); // Track the last color we processed
 
 	// Step 2: Derived reactive values
 
@@ -32,26 +33,19 @@
 	// Reactive effect: when validatedColor changes, update matches
 	$effect(() => {
 		if (validatedColor) {
-			const matches = findMultipleMatches(validatedColor, 8);
-
-			const isSameMatchList =
-				matches.length === multipleMatches.length &&
-				matches.every((m, i) => m.color.hex === multipleMatches[i].color.hex);
-
-			const firstMatch = matches[0] || null;
-			const isSameSelected = selectedMatch?.color.hex === firstMatch?.color.hex;
-
-			if (!isSameMatchList) {
+			// Only update matches if we have a new color
+			if (validatedColor !== lastValidatedColor) {
+				const matches = findMultipleMatches(validatedColor, 8);
 				multipleMatches = matches;
-			}
-
-			if (!isSameSelected) {
-				selectedMatch = firstMatch;
+				selectedMatch = matches[0] || null;
+				lastValidatedColor = validatedColor;
 			}
 		} else {
+			// Clear everything when no valid color
 			if (multipleMatches.length > 0 || selectedMatch !== null) {
 				multipleMatches = [];
 				selectedMatch = null;
+				lastValidatedColor = null;
 			}
 		}
 	});
