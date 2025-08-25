@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
 	import { inject } from '@vercel/analytics';
+	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import '../app.css';
 
 	let { data, children } = $props();
@@ -8,6 +9,7 @@
 	// Inject Vercel Analytics in production only
 	if (!dev) {
 		inject();
+		injectSpeedInsights();
 	}
 </script>
 
