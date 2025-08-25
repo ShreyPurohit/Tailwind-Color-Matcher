@@ -3,37 +3,36 @@
 	import { extractHexColor } from '$utils/colorValidation';
 	import { cn } from '$utils/constants';
 
-	// Props & bindable
-	export let value: string = '';
-	export let isValidInput: boolean = false;
-	export let inputError: string | null = null;
+	// Props (bound from parent)
+	let {
+		value = $bindable(),
+		isValidInput,
+		inputError
+	}: { value: string; isValidInput: boolean; inputError: string | undefined } = $props();
 
-	// Helper to format hex color correctly (# + uppercase)
+	// Helper to format hex
 	function formatHex(color: string) {
 		if (!color) return '';
 		if (!color.startsWith('#')) color = '#' + color;
 		return color.toUpperCase();
 	}
 
-	// Handle paste event on text input
+	// Derived value for color picker
+	const formattedValue = $derived(() => formatHex(value));
+
+	// Paste handler
 	const handlePaste = (e: ClipboardEvent) => {
 		e.preventDefault();
-		const clipboardData = e.clipboardData;
-		if (clipboardData) {
-			const pastedText = clipboardData.getData('text');
-			const extractedColor = extractHexColor(pastedText);
-			value = extractedColor || pastedText;
-		}
+		const pastedText = e.clipboardData?.getData('text') ?? '';
+		const extractedColor = extractHexColor(pastedText);
+		value = extractedColor || pastedText; // ✅ allowed because it's a bound prop
 	};
 
-	// Handle color picker change event
+	// Color picker change handler
 	const handleColorPickerChange = (e: Event) => {
 		const target = e.target as HTMLInputElement;
-		value = formatHex(target.value);
+		value = formatHex(target.value); // ✅ still fine for bound prop
 	};
-
-	// Format the value for consistent use (preview & color picker input)
-	$: formattedValue = formatHex(value);
 </script>
 
 <div class="space-y-2 px-4 sm:px-0">
@@ -59,24 +58,24 @@
 			aria-describedby="color-input-help"
 		/>
 
-		<!-- Color picker button inside the input (absolute, rounded) -->
+		<!-- Color picker button -->
 		<div
 			class="absolute top-1/2 right-2 h-6 w-6 -translate-y-1/2 overflow-hidden rounded-full border border-gray-300 shadow-sm"
 		>
 			<input
 				type="color"
 				aria-label="Pick a color"
-				bind:value={formattedValue}
+				value={formattedValue()}
 				oninput={handleColorPickerChange}
 				class="absolute inset-0 cursor-pointer [appearance:none]
-         opacity-0
-         [&::-webkit-color-swatch]:rounded-full
-         [&::-webkit-color-swatch]:border-0
-         [&::-webkit-color-swatch-wrapper]:p-0"
+					opacity-0
+					[&::-webkit-color-swatch]:rounded-full
+					[&::-webkit-color-swatch]:border-0
+					[&::-webkit-color-swatch-wrapper]:p-0"
 			/>
 			<div
 				class="pointer-events-none absolute inset-0 rounded-full"
-				style={`background-color: ${formattedValue}`}
+				style={`background-color: ${formattedValue()}`}
 			></div>
 		</div>
 	</div>

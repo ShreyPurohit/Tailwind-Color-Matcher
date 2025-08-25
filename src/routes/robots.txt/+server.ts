@@ -1,9 +1,9 @@
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ url }) => {
-    const baseUrl = url.origin;
+	const baseUrl = url.origin;
 
-    const robots = `User-agent: *
+	const robots = `User-agent: *
 Allow: /
 
 # Sitemap
@@ -41,12 +41,12 @@ Disallow: /
 User-agent: Claude-Web
 Disallow: /`;
 
-    return new Response(robots, {
-        headers: {
-            'Content-Type': 'text/plain',
-            'Cache-Control': 'max-age=86400'
-        }
-    });
+	return new Response(robots, {
+		headers: {
+			'Content-Type': 'text/plain',
+			'Cache-Control': 'max-age=86400'
+		}
+	});
 };
 
 export const prerender = true;
