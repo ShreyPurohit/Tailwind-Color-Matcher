@@ -1,27 +1,14 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { dev } from '$app/environment';
+	import { inject } from '@vercel/analytics';
 	import '../app.css';
 
 	let { data, children } = $props();
 
-	// SEO and performance optimizations
-	onMount(() => {
-		// Add performance monitoring
-		if (typeof window !== 'undefined' && 'performance' in window) {
-			// Track Core Web Vitals
-			import('web-vitals')
-				.then(({ onCLS, onTTFB, onFCP, onLCP, onINP }) => {
-					onCLS(console.log);
-					onINP(console.log);
-					onFCP(console.log);
-					onLCP(console.log);
-					onTTFB(console.log);
-				})
-				.catch(() => {
-					// Silently fail if web-vitals is not available
-				});
-		}
-	});
+	// Inject Vercel Analytics in production only
+	if (!dev) {
+		inject();
+	}
 </script>
 
 <svelte:head>
