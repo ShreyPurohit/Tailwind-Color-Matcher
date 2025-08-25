@@ -1,11 +1,113 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		%sveltekit.head%
-	</head>
-	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
-	</body>
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<!-- Primary Meta Tags -->
+	<title>%sveltekit.title%</title>
+	<meta name="title" content="%sveltekit.title%" />
+	<meta name="description" content="%sveltekit.description%" />
+	<meta name="keywords"
+		content="tailwind css, color matcher, hex to tailwind, color converter, design tools, css colors, tailwind colors, color palette, web development, frontend tools" />
+	<meta name="author" content="Shrey Purohit" />
+	<meta name="robots" content="index, follow" />
+	<meta name="language" content="English" />
+	<meta name="revisit-after" content="7 days" />
+
+	<!-- Canonical URL -->
+	<link rel="canonical" href="%sveltekit.url%" />
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="%sveltekit.url%" />
+	<meta property="og:title" content="%sveltekit.title%" />
+	<meta property="og:description" content="%sveltekit.description%" />
+	<meta property="og:image" content="%sveltekit.assets%/og-image.png" />
+	<meta property="og:site_name" content="Tailwind Color Matcher" />
+	<meta property="og:locale" content="en_US" />
+
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image" />
+	<meta property="twitter:url" content="%sveltekit.url%" />
+	<meta property="twitter:title" content="%sveltekit.title%" />
+	<meta property="twitter:description" content="%sveltekit.description%" />
+	<meta property="twitter:image" content="%sveltekit.assets%/og-image.png" />
+	<meta property="twitter:creator" content="@ShreyPurohit" />
+
+	<!-- Favicon and Icons -->
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<link rel="manifest" href="/site.webmanifest" />
+	<meta name="theme-color" content="#3b82f6" />
+	<meta name="msapplication-TileColor" content="#3b82f6" />
+
+	<!-- Preconnect to external domains -->
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+	<!-- JSON-LD Structured Data -->
+	<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "WebApplication",
+				"name": "Tailwind Color Matcher",
+				"description": "Find the closest Tailwind CSS color to any hex color code. Perfect for maintaining design consistency with Tailwind's color palette.",
+				"url": "%sveltekit.url%",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "Web Browser",
+				"offers": {
+					"@type": "Offer",
+					"price": "0",
+					"priceCurrency": "USD"
+				},
+				"creator": {
+					"@type": "Person",
+					"name": "Shrey Purohit",
+					"url": "https://github.com/ShreyPurohit"
+				},
+				"keywords": "tailwind css, color matcher, hex to tailwind, color converter, design tools",
+				"screenshot": "%sveltekit.assets%/og-image.png",
+				"featureList": [
+					"Convert hex colors to Tailwind CSS colors",
+					"Find multiple color matches",
+					"Copy color codes and class names",
+					"Visual color comparison",
+					"Perceptual color distance calculation"
+				]
+			}
+		</script>
+
+	%sveltekit.head%
+</head>
+
+<body data-sveltekit-preload-data="hover">
+	<div style="display: contents">%sveltekit.body%</div>
+
+	<!-- Schema.org structured data for breadcrumbs -->
+	<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "BreadcrumbList",
+				"itemListElement": [
+					{
+						"@type": "ListItem",
+						"position": 1,
+						"name": "Home",
+						"item": "%sveltekit.url%"
+					},
+					{
+						"@type": "ListItem",
+						"position": 2,
+						"name": "Color Matcher",
+						"item": "%sveltekit.url%"
+					}
+				]
+			}
+		</script>
+</body>
+
 </html>

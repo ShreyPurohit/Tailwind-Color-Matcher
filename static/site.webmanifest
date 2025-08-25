@@ -1,0 +1,21 @@
+{
+  "name": "Tailwind Color Matcher",
+  "short_name": "ColorMatcher",
+  "description": "Find the closest Tailwind CSS color to any hex code.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
